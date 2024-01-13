@@ -1,12 +1,6 @@
 import { useRef } from 'react'
 import { getURLVideoFromFlixHQ } from '@/scrapping/videoscrap';
 
-if (!String.prototype.endsWithVideoFormat) {
-  String.prototype.endsWithVideoFormat = function() {
-      return /\.(mp4|ts|mkv)$/.test(this);
-  };
-}
-
 export async function getStaticProps() {
   const videoUrl = await getURLVideoFromFlixHQ('https://flixhq.ws/movie/napoleon-43049/');
   
