@@ -1,3 +1,4 @@
+import re
 import requests
 from bs4 import BeautifulSoup
 
@@ -21,8 +22,20 @@ for fila in cuerpo_tabla.find_all('tr'):
         enlace = div.find('a') if div else None
 
         if enlace:
-            nombre_pelicula = enlace.text.strip()
-            print(nombre_pelicula)
             parte_url = enlace['href']
             urls_peliculas.append(parte_url)
-            print(urls_peliculas)
+
+            pelicula_response = requests.get(f"https://therarbg.com{parte_url}")
+            print(f"Parte de la URL de cada pelicula: {pelicula_response.url}")
+
+            pelicula_html = pelicula_response.content
+            pelicula_soup = BeautifulSoup(pelicula_html, "html.parser")
+
+            enlace_magnet = pelicula_soup.find("table").find("button").find_all("a")
+
+            if enlace_magnet:
+                enlace_magnet_url = enlace_magnet[0].get("href")
+                print(f"Enlace Magnet: {enlace_magnet_url}")
+                print("=" * 50)
+
+
