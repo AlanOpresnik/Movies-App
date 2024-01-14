@@ -3,7 +3,7 @@ import { useMoviesContxt } from "@/context/MovieContext/MoviesContext";
 import { Button, Rating } from "@mui/material";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import StarIcon from "@mui/icons-material/Star";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
@@ -11,6 +11,7 @@ import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import "../../pages/movieDetails/[id]/loader.css";
 const MovieDetails = () => {
   const router = useRouter();
+  const [loading, setloading] = useState(true);
   const { id } = router.query;
 
   const {
@@ -21,11 +22,14 @@ const MovieDetails = () => {
     fetchGenres,
     formatearFecha,
     dateMovie,
-    loading,
   } = useMoviesContxt();
   useEffect(() => {
     fetchGenres();
     formatearFecha(movieDetails.release_date);
+    const timeoutId = setTimeout(() => {
+      setloading(false);
+    }, 500);
+    return () => clearTimeout(timeoutId);
   }, []);
   useEffect(() => {
     if (id) {

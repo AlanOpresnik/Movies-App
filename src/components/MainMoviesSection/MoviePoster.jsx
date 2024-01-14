@@ -9,10 +9,11 @@ const MoviePoster = ({ movie }) => {
   return (
     <div
       key={movie.id}
-      onClick={() => router.push(`movieDetails/${movie.id}`)}
+      onClick={()=> router.push(`movieDetails/${movie.id}`)}
       className="mb-3 w-[210px] cursor-pointer  hover:scale-105 duration-300 transition-transform"
     >
       <Image
+      
         height={200}
         width={250}
         src={`${URL_IMAGE + movie.poster_path}`}

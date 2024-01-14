@@ -1,0 +1,10 @@
+.animated-section-divider {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 2s ease, transform 2s ease;
+  }
+  
+  .animated-section-divider.active {
+    opacity: 1;
+    transform: translateY(0);
+  }

@@ -16,7 +16,6 @@ function MyApp({ Component, pageProps }) {
     }
   }, [isAboutPage]);
 
-  // Utiliza el diseño específico o el diseño predeterminado
   return isAboutPage ? (
     <Component {...pageProps} />
   ) : (
