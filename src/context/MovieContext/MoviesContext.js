@@ -27,6 +27,7 @@ export const MoviesContextProvider = ({ children }) => {
   const [movieDetails, setMovieDetails] = useState([]);
   const [dateMovie, setDateMovie] = useState("");
   const [actores, setActores] = useState([]);
+  const [videos, setVideos] = useState([]);
   console.log(movie);
 
   const fetchMovies = async (searchKey) => {
@@ -175,6 +176,38 @@ export const MoviesContextProvider = ({ children }) => {
       console.error("Error:", error.message);
     }
   };
+  const getYouTubeTrailerUrl = (video) => {
+    if (video.site === 'YouTube' && video.type === 'Trailer') {
+      return `https://www.youtube.com/watch?v=${video.key}`;
+    } else {
+      // Si no es un trailer de YouTube, puedes manejarlo según tus necesidades
+      return null;
+    }
+  };
+  const fetchVideos = async (id) => {
+    try {
+      const response = await axios.get(`${API_URL}/movie/${id}/videos?api_key=${API_KEY}`);
+  
+      if (response.status !== 200) {
+        throw new Error("Error al obtener los videos");
+      }
+  
+      const data = response.data;
+  
+      // Filtrar solo los videos que son trailers de YouTube
+      const youtubeTrailer = data.results.find(video => video.site === 'YouTube' && video.type === 'Trailer');
+  
+      // Obtener la URL del primer trailer de YouTube
+      const trailerUrl = youtubeTrailer ? `https://www.youtube.com/watch?v=${youtubeTrailer.key}` : null;
+  
+      // Establecer la URL del trailer en el estado
+      setVideos(trailerUrl ? [trailerUrl] : []);
+  
+      console.log(trailerUrl);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <MoviesContext.Provider
@@ -202,7 +235,9 @@ export const MoviesContextProvider = ({ children }) => {
         dateMovie,
         loading,
         obtenerActoresDePelicula,
-        actores
+        actores,
+        fetchVideos,
+        videos,
       }}
     >
       {children}
