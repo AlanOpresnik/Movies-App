@@ -1,32 +1,14 @@
-import { useRef } from 'react'
-import { getURLVideoFromFlixHQ } from '@/scrapping/videoscrap';
+import Layout from "@/components/Layout/Layout";
+import MainMoviesSection from "@/components/MainMoviesSection/MainMoviesSection";
+import MovieBanner from "@/components/MainMoviesSection/MovieBanner";
 
-export async function getStaticProps() {
-  const videoUrl = await getURLVideoFromFlixHQ('https://flixhq.ws/movie/napoleon-43049/');
-  
-  return { props: { video: `<iframe src="${videoUrl}" width="100%" height="100%"></iframe>` } }
-}
-
-export default function Home( {video}) {
-  const refContainer = useRef(null);
-
-  const renderVideoContent = () => {
-      return { __html: video };
-  };
+export default function Home() {
   return (
-  <div>
-    <style global jsx>{`
-      html,
-      body,
-      body > div:first-child,
-      div#__next,
-      div#__next > div {
-        height: 100%;
-      }
-    `}</style>
-   <div style={{width: "100%", height: "100%"}} ref={refContainer} dangerouslySetInnerHTML={renderVideoContent()}>
-
-   </div>
-   </div>
-  )
+    <div className="bg-[#141414] text-white">
+     <div className="z-1 min-h-[100vh]">
+        <MovieBanner />
+      </div>
+      
+    </div>
+  );
 }

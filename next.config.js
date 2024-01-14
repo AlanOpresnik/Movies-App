@@ -6,6 +6,7 @@ const nextConfig = {
     trailingSlash: true, 
     images: {
       unoptimized: true,
+      domains: ['image.tmdb.org'],
   },
     webpack: (config, { isServer }) => {
       if (!isServer) {
