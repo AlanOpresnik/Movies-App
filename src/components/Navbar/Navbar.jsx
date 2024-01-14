@@ -66,7 +66,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-full h-[65px] z-[20] fixed" style={navbarStyles}>
+    <div className="w-full h-[65px] z-[20] fixed mb-24" style={navbarStyles}>
       <div className="max-w-[1620px] mx-auto flex items-center h-[64px] gap-2 md:gap-12  z-10">
         <Button
           className="block md:hidden"

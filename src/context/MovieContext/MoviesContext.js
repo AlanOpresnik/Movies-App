@@ -24,6 +24,8 @@ export const MoviesContextProvider = ({ children }) => {
   const [Tv, setTv] = useState(null); // Inicializar con null u otro valor por defecto si es apropiado
   const [genresTv, setGenresTv] = useState([]);
   const [loading, setIsloading] = useState(true);
+  const [movieDetails, setMovieDetails] = useState([]);
+  const [dateMovie, setDateMovie] = useState("");
   console.log(movie);
 
   const fetchMovies = async (searchKey) => {
@@ -31,7 +33,7 @@ export const MoviesContextProvider = ({ children }) => {
 
     try {
       let allResults = [];
-
+      setIsloading(true);
       for (let page = 1; page <= totalPages; page++) {
         const response = await axios(`${API_URL}/${type}/movie`, {
           params: {
@@ -45,11 +47,9 @@ export const MoviesContextProvider = ({ children }) => {
         allResults = [...allResults, ...results];
       }
 
-      console.log("All results from API:", allResults);
-
       setMovies(allResults);
       setMovie(allResults[0]);
-      console.log(allResults[0]);
+      setIsloading(false);
     } catch (error) {
       console.error("Error fetching movies:", error);
     }
@@ -65,13 +65,14 @@ export const MoviesContextProvider = ({ children }) => {
   };
 
   const fetchGenres = async () => {
+    setIsloading(true);
     try {
       const response = await fetch(
         `${API_URL}/genre/movie/list?api_key=${API_KEY}`
       );
       const data = await response.json();
       setGenres(data.genres);
-      console.log(data.genres);
+      setIsloading(false);
     } catch (error) {
       console.error("Error fetching genres:", error);
       return [];
@@ -79,6 +80,7 @@ export const MoviesContextProvider = ({ children }) => {
   };
 
   const fetchTVShows = async (searchKey, page = 1) => {
+    setIsloading(true);
     const type = searchKey ? "search" : "discover";
     const API_KEY = "a41c4738f02c64dfaa5c82049d53de66";
     const API_URL = "https://api.themoviedb.org/3";
@@ -98,11 +100,10 @@ export const MoviesContextProvider = ({ children }) => {
         const { results } = response.data;
         allResults = [...allResults, ...results];
         SetTvs(allResults);
-
-        console.log("TV Shows:", response.data.results);
+        setIsloading(false);
       }
     } catch (error) {
-      console.error("Error fetching TV shows:", error);
+      console.log(error);
     }
   };
 
@@ -111,12 +112,49 @@ export const MoviesContextProvider = ({ children }) => {
   }, []);
   const fechMoreTvShows = () => {
     setTotalPages(totalPages + 1);
-
-    console.log("Agregando más, nueva total de páginas:", totalPages + 1);
   };
   useEffect(() => {
     fetchTVShows();
   }, [totalPages]);
+
+  const fetchMovieDetails = async (id) => {
+    try {
+      setIsloading(true);
+      const response = await axios.get(`${API_URL}/movie/${id}`, {
+        params: {
+          api_key: API_KEY,
+        },
+      });
+
+      setMovieDetails(response.data);
+      setIsloading(false);
+    } catch (error) {
+      console.error("Error fetching movie details:", error);
+    }
+  };
+
+  const formatearFecha = async (date) => {
+    try {
+      console.log("Fecha Original:", date);
+
+      // Si date es undefined, no hagas nada y sal del método
+      if (date === undefined) {
+        return ""
+      }
+
+      // Simula un retraso de 1 segundo para esperar la llegada de la fecha (puedes ajustar esto)
+      await new Promise((resolve) => setTimeout(resolve, 0));
+
+      const fecha = new Date(date);
+
+      const opcionesDeFormato = { month: "long", year: "numeric" };
+      const fechaFormateada = fecha.toLocaleString("es-ES", opcionesDeFormato);
+
+      setDateMovie(fechaFormateada);
+    } catch (error) {
+      console.error("Error al formatear la fecha:", error);
+    }
+  };
   return (
     <MoviesContext.Provider
       value={{
@@ -137,6 +175,11 @@ export const MoviesContextProvider = ({ children }) => {
         totalPages,
         setTotalPages,
         fechMoreTvShows,
+        fetchMovieDetails,
+        movieDetails,
+        formatearFecha,
+        dateMovie,
+        loading,
       }}
     >
       {children}

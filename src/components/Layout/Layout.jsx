@@ -5,11 +5,10 @@ import { MoviesContextProvider } from "@/context/MovieContext/MoviesContext";
 const Layout = ({ children }) => {
   return (
     <MoviesContextProvider>
-        <Navbar />
-    
-        {children}
-  
-      </MoviesContextProvider>
+      <Navbar />
+
+      <div className="bg-black w-full   h-[100vh]">{children}</div>
+    </MoviesContextProvider>
   );
 };
 

@@ -12,14 +12,13 @@ import { Pagination, Autoplay } from "swiper/modules";
 import MovieBanner from "./MovieBanner";
 
 const MainMoviesSection = () => {
-  const { movies, setMovie } = useMoviesContxt();
+  const { movies, setMovie, loading } = useMoviesContxt();
   const [activeSlide, setActiveSlide] = useState(0);
 
   const handleSwiperSlideChange = (swiper) => {
     setActiveSlide(swiper.activeIndex);
     setMovie(movies[swiper.activeIndex]);
   };
-
   return (
     <div className="w-full md:max-w-[1580px]">
       <h2 className="py-6">Ultimas peliculas</h2>
@@ -29,10 +28,8 @@ const MainMoviesSection = () => {
           delay: 8000,
           disableOnInteraction: false,
         }}
-       
         className="mySwiper"
         onSlideChange={handleSwiperSlideChange}
-        keyboard={true}
         modules={[Autoplay]}
         breakpoints={{
           // Define tus breakpoints aquí

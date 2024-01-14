@@ -56,7 +56,7 @@ const UserNavbarSection = () => {
             <input
               type="text"
               placeholder="¿Que estas buscando?"
-              className="text-black bg-[#111111] text-xs xl:w-[250px]  py-2 px-4 rounded-md"
+              className="text-white bg-[#111111] text-xs xl:w-[250px]  py-2 px-4 rounded-md"
               onChange={(e) => setSearchKey(e.target.value)}
             />
           </form>
