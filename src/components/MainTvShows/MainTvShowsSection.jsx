@@ -1,6 +1,5 @@
 import { useMoviesContxt } from "@/context/MovieContext/MoviesContext";
 import React, { useEffect, useRef, useState } from "react";
-import MoviePoster from "./MoviePoster";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
@@ -9,29 +8,36 @@ import "swiper/css/pagination";
 
 // import required modules
 import { Pagination, Autoplay } from "swiper/modules";
-import MovieBanner from "./MovieBanner";
 
-const MainMoviesSection = () => {
-  const { movies, setMovie } = useMoviesContxt();
+import TvPoster from "./TvPoster";
+
+const MainTvShowsSection = () => {
+  const { Tvs, fechMoreTvShows } = useMoviesContxt();
   const [activeSlide, setActiveSlide] = useState(0);
+  const [actionActivated, setActionActivated] = useState(false);
 
   const handleSwiperSlideChange = (swiper) => {
     setActiveSlide(swiper.activeIndex);
-    setMovie(movies[swiper.activeIndex]);
+
+    // Verifica si el índice del slider es 21 y esta en la última página
+    if (activeSlide >= 20 && !actionActivated) {
+      fechMoreTvShows();
+      setActionActivated(true);
+    }
   };
 
   return (
     <div className="w-full md:max-w-[1580px]">
-      <h2 className="py-6">Ultimas peliculas</h2>
+      <h2 className="py-6">Tv shows</h2>
       <Swiper
         slidesPerView={1}
+        onSlideChange={handleSwiperSlideChange}
         autoplay={{
           delay: 8000,
           disableOnInteraction: false,
         }}
-       
+
         className="mySwiper"
-        onSlideChange={handleSwiperSlideChange}
         keyboard={true}
         modules={[Autoplay]}
         breakpoints={{
@@ -150,9 +156,9 @@ const MainMoviesSection = () => {
           },
         }}
       >
-        {movies?.map((movie, index) => (
+        {Tvs?.map((tv, index) => (
           <SwiperSlide key={index}>
-            <MoviePoster movie={movie} />
+            <TvPoster tv={tv} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -160,4 +166,4 @@ const MainMoviesSection = () => {
   );
 };
 
-export default MainMoviesSection;
+export default MainTvShowsSection;
