@@ -26,6 +26,7 @@ export const MoviesContextProvider = ({ children }) => {
   const [loading, setIsloading] = useState(true);
   const [movieDetails, setMovieDetails] = useState([]);
   const [dateMovie, setDateMovie] = useState("");
+  const [actores, setActores] = useState([]);
   console.log(movie);
 
   const fetchMovies = async (searchKey) => {
@@ -139,7 +140,7 @@ export const MoviesContextProvider = ({ children }) => {
 
       // Si date es undefined, no hagas nada y sal del método
       if (date === undefined) {
-        return ""
+        return "";
       }
 
       // Simula un retraso de 1 segundo para esperar la llegada de la fecha (puedes ajustar esto)
@@ -155,6 +156,26 @@ export const MoviesContextProvider = ({ children }) => {
       console.error("Error al formatear la fecha:", error);
     }
   };
+
+  const obtenerActoresDePelicula = async (id) => {
+    try {
+      const response = await fetch(
+        `${API_URL}/movie/${id}/credits?api_key=${API_KEY}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Error al obtener los datos de los actores.");
+      }
+
+      const data = await response.json();
+      setActores(data.cast);
+
+      console.log("Actores de la película:", data.cast);
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+  };
+
   return (
     <MoviesContext.Provider
       value={{
@@ -180,6 +201,8 @@ export const MoviesContextProvider = ({ children }) => {
         formatearFecha,
         dateMovie,
         loading,
+        obtenerActoresDePelicula,
+        actores
       }}
     >
       {children}
