@@ -5,3 +5,5 @@ class Usuario {
         this.contraseña = contraseña
     }
 }
+
+module.exports = Usuario;
