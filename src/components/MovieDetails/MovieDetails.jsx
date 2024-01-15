@@ -9,7 +9,7 @@ import StarIcon from "@mui/icons-material/Star";
 import WatchLaterIcon from "@mui/icons-material/WatchLater";
 import ReactPlayer from "react-player";
 import CloseIcon from "@mui/icons-material/Close";
-import "../../pages/movieDetails/[id]/loader.css";
+// import "../../pages/movieDetails/[id]/loader.css";
 const MovieDetails = () => {
   const router = useRouter();
   const [loading, setloading] = useState(true);
@@ -166,7 +166,7 @@ const MovieDetails = () => {
                       sx={{
                         color: "white",
                         borderColor: "white",
-                        marginRight:"10px",
+                        marginRight: "10px",
                         "&:hover": {
                           borderColor: "white",
                         },

@@ -1,3 +1,4 @@
+import Footer from "@/components/Footer/Footer";
 import Layout from "@/components/Layout/Layout";
 import MainMoviesSection from "@/components/MainMoviesSection/MainMoviesSection";
 import MovieBanner from "@/components/MainMoviesSection/MovieBanner";
@@ -5,16 +6,14 @@ import MainTvShowsSection from "@/components/MainTvShows/MainTvShowsSection";
 import { useMoviesContxt } from "@/context/MovieContext/MoviesContext";
 import { useEffect, useState } from "react";
 
-
 export default function Home() {
-  const [loading,setloading] = useState(true)
+  const [loading, setloading] = useState(true);
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       setloading(false);
     }, 800);
     return () => clearTimeout(timeoutId);
-  }, [])
-
+  }, []);
 
   if (loading) {
     return (
@@ -32,6 +31,7 @@ export default function Home() {
       <div className="mt-6 mx-auto ml-4  md:mx-auto md:max-w-[1580px]">
         <MainTvShowsSection />
       </div>
+      <Footer></Footer>
     </div>
   );
 }

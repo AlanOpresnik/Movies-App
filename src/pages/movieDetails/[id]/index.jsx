@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 
-import "./loader.css";
+
 import MovieDetails from "@/components/MovieDetails/MovieDetails";
 import ActorsSection from "@/components/MovieDetails/MovieDetailsActorsSection/ActorsSection";
 import CompanysSection from "@/components/MovieDetails/MovieDetailsCompanysSection/CompanysSection";
@@ -15,7 +15,7 @@ const MovieDetailsPage = () => {
       <MovieDetails />
       <ActorsSection id={id} />
       <CompanysSection />
-      <Divider/>
+      <Divider />
     </>
   );
 };

@@ -3,23 +3,22 @@ import React, { useEffect } from "react";
 import michi from "../../../public/michi.png";
 import { Button } from "@mui/material";
 
-import "./animate.css";
 import { Element } from "react-scroll";
 import { useRouter } from "next/navigation";
 
 const Divider = () => {
-    const router = useRouter()
+  const router = useRouter();
   useEffect(() => {
     const handleScroll = () => {
-        const element = document.querySelector(".animated-section-divider");
-        if (element) {
-          const rect = element.getBoundingClientRect();
-          const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
-          if (isVisible) {
-            element.classList.add("active");
-          }
+      const element = document.querySelector(".animated-section-divider");
+      if (element) {
+        const rect = element.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+        if (isVisible) {
+          element.classList.add("active");
         }
-    }
+      }
+    };
 
     window.addEventListener("scroll", handleScroll);
 
@@ -39,7 +38,7 @@ const Divider = () => {
             <p>Revisa nuestro catalogo</p>
           </div>
           <Button
-          onClick={() => router.push("/")}
+            onClick={() => router.push("/")}
             className="mt-6 text-sm py-4 rounded-xl"
             variant="outlined"
             sx={{ borderColor: "#B6B6B6" }}
