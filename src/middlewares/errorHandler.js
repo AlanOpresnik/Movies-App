@@ -26,5 +26,9 @@ class ErrorHandler {
     static handleGetReviewsError(err, req, res, next) {
       ErrorHandler.sendErrorResponse(res, 500, 'Error al obtener las reviews', err);
     }
+
+    static handlerGetUsersError(err, req, res, next) {
+      ErrorHandler.sendErrorResponse(res, 500, 'Error al obtener los usuarios', err)
+    }
   }
   
