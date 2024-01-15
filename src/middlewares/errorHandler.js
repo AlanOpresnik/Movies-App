@@ -1,6 +1,9 @@
 class ErrorHandler {
-    static sendErrorResponse(res, statusCode, errorMessage) {
+    static sendErrorResponse(res, statusCode, errorMessage, err) {
       console.error(errorMessage);
+      if (err) {
+        console.error(err.stack || err.message || err);
+      }
       res.status(statusCode).json({ error: errorMessage });
     }
   
@@ -9,19 +12,19 @@ class ErrorHandler {
     }
   
     static handleGeneralErrors(err, req, res, next) {
-      ErrorHandler.sendErrorResponse(res, 500, 'Error interno del servidor');
+      ErrorHandler.sendErrorResponse(res, 500, 'Error interno del servidor', err);
     }
   
-    static handleCreateUserError(req, res, next) {
-      ErrorHandler.sendErrorResponse(res, 400, 'Error al crear el usuario');
+    static handleCreateUserError(err, req, res, next) {
+      ErrorHandler.sendErrorResponse(res, 400, 'Error al crear el usuario', err);
     }
   
-    static handleCreateReviewError(req, res, next) {
-      ErrorHandler.sendErrorResponse(res, 400, 'Error al crear la review');
+    static handleCreateReviewError(err, req, res, next) {
+      ErrorHandler.sendErrorResponse(res, 400, 'Error al crear la review', err);
     }
   
-    static handleGetReviewsError(req, res, next) {
-      ErrorHandler.sendErrorResponse(res, 500, 'Error al obtener las reviews');
+    static handleGetReviewsError(err, req, res, next) {
+      ErrorHandler.sendErrorResponse(res, 500, 'Error al obtener las reviews', err);
     }
   }
   
