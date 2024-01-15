@@ -5,3 +5,5 @@ class Review {
         this.usuario = usuario
     }
 }
+
+module.exports = Review;
