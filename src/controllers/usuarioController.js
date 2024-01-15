@@ -8,7 +8,7 @@ class UsuarioController {
     async createUser(req, res) {
         try {
             const { nombre, correo, contraseña} = req.body;
-            const nuevoUsuario = this.usuarioRepository.crearUsuario(nombre, correo, contraseña);
+            const nuevoUsuario = await this.usuarioRepository.crearUsuario(nombre, correo, contraseña);
 
             // Aca iria logica para guardar el dato en la bd
 
