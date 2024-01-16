@@ -24,7 +24,7 @@ const ActorsTVSection = ({ id }) => {
     obtenerActores();
   }, [id]);
   return (
-    <div className="bg-[#000000f5]   text-white">
+    <div className="bg-[#000000]   text-white">
       <div className="py-32 max-w-[1280px] mx-auto">
         <p className="text-center md:text-start text-4xl font-semibold mb-12 text-[#B6B6B6]">
           Actores principales

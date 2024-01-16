@@ -6,20 +6,15 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 // import required modules
-import { Pagination, Autoplay } from "swiper/modules";
+import { Pagination, Autoplay } from 'swiper/modules';
 
-import TvPoster from "./TvPoster";
+
+
 import { UseTvContext } from "@/context/TvContext/TvContext";
+import TvPosterAirToday from "./TvPosterAirToday";
 
-const MainTvShowsSection = () => {
-  const tvContext = UseTvContext();
-
-  if (!tvContext) {
-    // Si el contexto es undefined, puedes mostrar un mensaje de error o realizar alguna acción adecuada
-    return <p>Error: El contexto de TV es undefined.</p>;
-  }
-  Pagination;
-  const { Tvs, fechMoreTvShows } = UseTvContext();
+const TvAirTodaySection = () => {
+  const { AirToday, fechMoreTvShowsAirToday } = UseTvContext();
 
   const [activeSlide, setActiveSlide] = useState(0);
   const [actionActivated, setActionActivated] = useState(false);
@@ -29,14 +24,14 @@ const MainTvShowsSection = () => {
 
     // Verifica si el índice del slider es 21 y esta en la última página
     if (activeSlide >= 20 && !actionActivated) {
-      fechMoreTvShows();
+      fechMoreTvShowsAirToday();
       setActionActivated(true);
     }
   };
 
   return (
     <div className="w-full md:max-w-[1580px]">
-      <h2 className="py-6">Tv shows / Series</h2>
+      <h2 className="py-6">Tv shows que se emiten hoy</h2>
       <Swiper
         slidesPerView={1}
         onSlideChange={handleSwiperSlideChange}
@@ -163,9 +158,9 @@ const MainTvShowsSection = () => {
           },
         }}
       >
-        {Tvs?.map((tv, index) => (
+        {AirToday?.map((tvAir, index) => (
           <SwiperSlide key={index}>
-            <TvPoster tv={tv} />
+            <TvPosterAirToday tvAir={tvAir} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -173,4 +168,4 @@ const MainTvShowsSection = () => {
   );
 };
 
-export default MainTvShowsSection;
+export default TvAirTodaySection;

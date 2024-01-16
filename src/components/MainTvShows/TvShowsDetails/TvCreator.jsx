@@ -5,13 +5,13 @@ import React from "react";
 const TvCreator = () => {
   const { TvDetails, URL_IMAGE } = UseTvContext();
   return (
-    <div className="bg-[#000000f5]   text-white">
+    <div className="bg-[#000000]   text-white">
       <div className="py-24 max-w-[1280px] mx-auto">
         <p className="text-center md:text-start text-4xl font-semibold mb-12 text-[#B6B6B6]">
           {TvDetails.created_by?.length > 1 ? "Creadores" : "Creador"}
         </p>
         {TvDetails.created_by?.length > 1 ? (
-          <div className="flex gap-6  justify-center md:justify-start md:gap-12">
+          <div className="flex gap-6 flex-wrap  justify-center md:justify-start md:gap-12">
             {TvDetails.created_by?.map((creator) => (
               <div className="relative">
                 <Image
