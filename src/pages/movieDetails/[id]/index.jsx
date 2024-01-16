@@ -6,6 +6,7 @@ import ActorsSection from "@/components/MovieDetails/MovieDetailsActorsSection/A
 import CompanysSection from "@/components/MovieDetails/MovieDetailsCompanysSection/CompanysSection";
 import Divider from "@/components/DividerMovieDetails/Divider";
 import Footer from "@/components/Footer/Footer";
+import TvCreator from "@/components/MainTvShows/TvShowsDetails/TvCreator";
 const MovieDetailsPage = () => {
   const router = useRouter();
   const { id } = router.query;
