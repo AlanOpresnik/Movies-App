@@ -12,7 +12,6 @@ const MovieDetailsPage = () => {
 
   return (
     <>
-      <MovieDetails />
       <ActorsSection id={id} />
       <CompanysSection />
       <Divider />

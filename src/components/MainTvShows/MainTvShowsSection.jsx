@@ -1,4 +1,3 @@
-import { useMoviesContxt } from "@/context/MovieContext/MoviesContext";
 import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -10,9 +9,18 @@ import "swiper/css/pagination";
 import { Pagination, Autoplay } from "swiper/modules";
 
 import TvPoster from "./TvPoster";
+import { UseTvContext } from "@/context/TvContext/TvContext";
 
 const MainTvShowsSection = () => {
-  const { Tvs, fechMoreTvShows } = useMoviesContxt();
+  const tvContext = UseTvContext();
+
+  if (!tvContext) {
+    // Si el contexto es undefined, puedes mostrar un mensaje de error o realizar alguna acción adecuada
+    return <p>Error: El contexto de TV es undefined.</p>;
+  }
+  Pagination;
+  const { Tvs, fechMoreTvShows } = UseTvContext();
+
   const [activeSlide, setActiveSlide] = useState(0);
   const [actionActivated, setActionActivated] = useState(false);
 
@@ -36,7 +44,6 @@ const MainTvShowsSection = () => {
           delay: 8000,
           disableOnInteraction: false,
         }}
-
         className="mySwiper"
         keyboard={true}
         modules={[Autoplay]}
