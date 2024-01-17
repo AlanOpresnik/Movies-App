@@ -8,23 +8,15 @@
     "start": "next start",
     "lint": "next lint"
   },
-  "resolve": {
-    "extensions": [".ts", ".js"],
-    "fallback": {
-      "child_process": false
-    }
-  },
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.4",
     "@mui/material": "^5.15.4",
     "axios": "^1.6.5",
-    "dgram": "^1.0.1",
-    "dns": "^0.2.2",
     "jquery": "^3.7.1",
     "jsdom": "^23.2.0",
-    "net": "^1.0.2",
+    "mysql2": "^3.7.0",
     "next": "14.0.4",
     "puppeteer": "^21.7.0",
     "react": "^18",
