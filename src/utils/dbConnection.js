@@ -1,13 +1,14 @@
 const mysql = require('mysql2/promise')
+const dbConfig = require('../config/dbConfig')
 
 class DBConnection {
     constructor() {
         this.pool = mysql.createPool({
             // Mas adelante hay que definir las configs
-            host: '',
-            user: '',
-            password: '',
-            database: '',
+            host: dbConfig.host,
+            user: dbConfig.user,
+            password: dbConfig.password,
+            database: dbConfig.database,
             waitForConnections: true,
             connectionLimit: 10,
             queueLimit: 0
