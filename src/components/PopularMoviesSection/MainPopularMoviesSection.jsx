@@ -8,18 +8,11 @@ import "swiper/css/pagination";
 // import required modules
 import { Pagination, Autoplay } from "swiper/modules";
 
-import TvPoster from "./TvPoster";
-import { UseTvContext } from "@/context/TvContext/TvContext";
+import { UsePopularContext } from "@/context/PopularMoviesContext/PopularMoviesContext";
+import PopularPoster from "./PopularPoster";
 
-const MainTvShowsSection = () => {
-  const tvContext = UseTvContext();
-
-  if (!tvContext) {
-    // Si el contexto es undefined, puedes mostrar un mensaje de error o realizar alguna acción adecuada
-    return <p>Error: El contexto de TV es undefined.</p>;
-  }
-  Pagination;
-  const { Tvs, fechMoreTvShows } = UseTvContext();
+const MainPopularMoviesSection = () => {
+  const { movies, fechMoreTvShows } = UsePopularContext();
 
   const [activeSlide, setActiveSlide] = useState(0);
   const [actionActivated, setActionActivated] = useState(false);
@@ -36,7 +29,7 @@ const MainTvShowsSection = () => {
 
   return (
     <div className="w-full md:max-w-[1580px]">
-      <h2 className="py-6">Tv shows / Series</h2>
+      <h2 className="py-6">Mejor puntuados por la audiencia</h2>
       <Swiper
         slidesPerView={1}
         onSlideChange={handleSwiperSlideChange}
@@ -163,9 +156,9 @@ const MainTvShowsSection = () => {
           },
         }}
       >
-        {Tvs?.map((tv, index) => (
+        {movies?.map((movie, index) => (
           <SwiperSlide key={index}>
-            <TvPoster tv={tv} />
+            <PopularPoster movie={movie} />
           </SwiperSlide>
         ))}
       </Swiper>
@@ -173,4 +166,4 @@ const MainTvShowsSection = () => {
   );
 };
 
-export default MainTvShowsSection;
+export default MainPopularMoviesSection;

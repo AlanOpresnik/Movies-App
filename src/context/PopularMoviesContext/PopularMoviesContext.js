@@ -1,11 +1,9 @@
 import axios from "axios";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-// Crear el contexto
-const MoviesContext = createContext();
+const PopularMoviesContext = createContext();
 
-// Crear el proveedor del contexto
-export const MoviesContextProvider = ({ children }) => {
+export const PopularContextProvider = ({ children }) => {
   const API_KEY = "a41c4738f02c64dfaa5c82049d53de66";
   const API_URL = "https://api.themoviedb.org/3";
   const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
@@ -16,54 +14,52 @@ export const MoviesContextProvider = ({ children }) => {
   const [searchKey, setSearchKey] = useState("");
   const [trailer, setTrailer] = useState(null);
   const [playing, setPlaying] = useState(false);
-  const [movie, setMovie] = useState(null); // Inicializar con null u otro valor por defecto si es apropiado
   const [genres, setGenres] = useState([]);
   const [trailerTv, setTrailerTv] = useState(null);
   const [playingTv, setPlayingTv] = useState(false);
   const [genresTv, setGenresTv] = useState([]);
   const [loading, setIsloading] = useState(true);
-  const [movieDetails, setMovieDetails] = useState([]);
+  const [MovieDetails, setMovieDetails] = useState([]);
   const [dateMovie, setDateMovie] = useState("");
   const [actores, setActores] = useState([]);
   const [videos, setVideos] = useState([]);
-  console.log(movie);
 
-  const fetchMovies = async (searchKey) => {
+  const fetchPopularMovies = async (searchKey, page = 1) => {
+    setIsloading(true);
     const type = searchKey ? "search" : "discover";
+    const API_KEY = "a41c4738f02c64dfaa5c82049d53de66";
+    const API_URL = "https://api.themoviedb.org/3";
+    const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
+    const URL_IMAGE = "https://image.tmdb.org/t/p/original";
 
     try {
       let allResults = [];
-      setIsloading(true);
       for (let page = 1; page <= totalPages; page++) {
-        const response = await axios(`${API_URL}/${type}/movie`, {
+        const response = await axios.get(`${API_URL}/movie/top_rated`, {
           params: {
             api_key: API_KEY,
-            query: searchKey,
-            page: page,
           },
         });
-
         const { results } = response.data;
         allResults = [...allResults, ...results];
-        console.log(allResults);
+        setMovies(allResults);
+        setIsloading(false);
       }
-
-      setMovies(allResults);
-      setMovie(allResults[0]);
-      setIsloading(false);
     } catch (error) {
-      console.error("Error fetching movies:", error);
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchMovies();
+    fetchPopularMovies();
   }, []);
-
-  const searchMovies = (e) => {
-    e.preventDefault();
-    fetchMovies(searchKey, 1);
+  const fechMoreTvShows = () => {
+    setTotalPages(totalPages + 1);
   };
+  useEffect(() => {
+    fetchPopularMovies();
+  }, [totalPages]);
+
 
   const fetchGenres = async () => {
     setIsloading(true);
@@ -80,22 +76,7 @@ export const MoviesContextProvider = ({ children }) => {
     }
   };
 
-  const fetchMovieDetails = async (id) => {
-    try {
-      setIsloading(true);
-      const response = await axios.get(`${API_URL}/movie/${id}`, {
-        params: {
-          api_key: API_KEY,
-        },
-      });
-
-      setMovieDetails(response.data);
-      setIsloading(false);
-    } catch (error) {
-      console.error("Error fetching movie details:", error);
-    }
-  };
-
+  
   const formatearFecha = async (date) => {
     try {
       console.log("Fecha Original:", date);
@@ -119,7 +100,25 @@ export const MoviesContextProvider = ({ children }) => {
     }
   };
 
-  const obtenerActoresDePelicula = async (id) => {
+
+  const fetchMovieDetails = async (id) => {
+    try {
+      setIsloading(true);
+      const response = await axios.get(`${API_URL}/tv/${id}`, {
+        params: {
+          api_key: API_KEY,
+        },
+      });
+
+      setMovieDetails(response.data);
+      setIsloading(false);
+    } catch (error) {
+      console.error("Error fetching movie details:", error);
+    }
+  };
+
+  
+  const obtenerActoresDeMoviePopular = async (id) => {
     try {
       const response = await fetch(
         `${API_URL}/movie/${id}/credits?api_key=${API_KEY}`
@@ -132,19 +131,12 @@ export const MoviesContextProvider = ({ children }) => {
       const data = await response.json();
       setActores(data.cast);
 
-      console.log("Actores de la película:", data.cast);
+      console.log("Actores de la tv:", data.cast);
     } catch (error) {
       console.error("Error:", error.message);
     }
   };
-  const getYouTubeTrailerUrl = (video) => {
-    if (video.site === "YouTube" && video.type === "Trailer") {
-      return `https://www.youtube.com/watch?v=${video.key}`;
-    } else {
-      // Si no es un trailer de YouTube, puedes manejarlo según tus necesidades
-      return null;
-    }
-  };
+
   const fetchVideos = async (id) => {
     try {
       const response = await axios.get(
@@ -177,38 +169,37 @@ export const MoviesContextProvider = ({ children }) => {
   };
 
   return (
-    <MoviesContext.Provider
+    <PopularMoviesContext.Provider
       value={{
         movies,
-        searchMovies,
         setSearchKey,
         searchKey,
-        movie,
         setPlaying,
-        setMovie,
         URL_IMAGE,
-        fetchMovies,
-        fetchGenres,
         genres,
+        fetchPopularMovies,
+        fetchGenres,
+        fetchVideos,
+        formatearFecha,
+        setMovies,
+        actores,
         totalPages,
         setTotalPages,
-        fetchMovieDetails,
-        movieDetails,
-        formatearFecha,
+        fechMoreTvShows,
+        MovieDetails,
         dateMovie,
         loading,
-        obtenerActoresDePelicula,
         actores,
-        fetchVideos,
         videos,
+        obtenerActoresDeMoviePopular,
+        fetchMovieDetails,
       }}
     >
       {children}
-    </MoviesContext.Provider>
+    </PopularMoviesContext.Provider>
   );
 };
 
-// Crear un hook personalizado para acceder al contexto
-export const useMoviesContxt = () => {
-  return useContext(MoviesContext);
+export const UsePopularContext = () => {
+  return useContext(PopularMoviesContext);
 };

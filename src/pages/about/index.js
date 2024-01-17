@@ -1,17 +1,16 @@
+// pages/about/index.js
 import { useRef } from "react";
-import { getURLVideoFromFlixHQ } from "@/scrapping/videoscrap";
-
+import { getScrapedData } from "../api/scrape";
 export async function getStaticProps() {
-  const videoUrl = await getURLVideoFromFlixHQ(
-    "https://flixhq.ws/movie/napoleon-43049/"
-  );
-
+  const { url } = await getScrapedData();
+console.log(url)
   return {
     props: {
-      video: `<iframe src="${videoUrl}" width="100%" height="100%"></iframe>`,
+      video: url,
     },
   };
 }
+
 
 export default function About({ video }) {
   const refContainer = useRef(null);

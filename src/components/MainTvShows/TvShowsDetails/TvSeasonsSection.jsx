@@ -1,4 +1,4 @@
-import { useMoviesContxt } from "@/context/MovieContext/MoviesContext";
+
 import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -9,13 +9,14 @@ import "swiper/css/pagination";
 // import required modules
 import { Pagination, Autoplay } from "swiper/modules";
 import Image from "next/image";
-const ActorsSection = ({ id }) => {
-  const { obtenerActoresDePelicula, actores, URL_IMAGE } = useMoviesContxt();
+import { UseTvContext } from "@/context/TvContext/TvContext";
+const TvSeasonsSection = ({ id }) => {
+  const { fetchTvDetails, TvDetails, URL_IMAGE } = UseTvContext();
   const [actoresCargados, setActoresCargados] = useState(false);
 
   useEffect(() => {
     const obtenerActores = async () => {
-      await obtenerActoresDePelicula(id);
+      await fetchTvDetails(id);
 
       setActoresCargados(true);
     };
@@ -24,14 +25,14 @@ const ActorsSection = ({ id }) => {
   }, [id]);
   return (
     <div className="bg-[#000000f5]   text-white">
-      <div className="py-32 max-w-[1280px] mx-auto">
+      <div className="py-32 pb-12 max-w-[1280px] mx-auto">
         <p className="text-center md:text-start text-4xl font-semibold mb-12 text-[#B6B6B6]">
-          Actores principales
+          Temporadas
         </p>
         <Swiper
           slidesPerView={1}
           autoplay={{
-            delay: 8000,
+            delay: 5000,
             disableOnInteraction: false,
           }}
           className="mySwiper"
@@ -104,33 +105,34 @@ const ActorsSection = ({ id }) => {
             },
           }}
         >
-          {actores?.map((actor) => (
-            <SwiperSlide key={actor.id}>
-              <div className="relative">
+          {TvDetails.seasons?.map((season) => 
+            <SwiperSlide key={season.id}>
+              <div className="relative h-[351px] ">
                 <Image
-                  className="rounded-lg"
+                  className="rounded-lg h-[350px]"
                   width={500}
                   height={500}
-                  src={URL_IMAGE + actor.profile_path}
+                  src={URL_IMAGE + season.poster_path}
+              
                 />
                 <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50 z-10 rounded-lg opacity-65"></div>
                 <div className="max-w-[200px] mx-auto relative z-20">
                   <h3 className="absolute text-white bottom-8 text-lg font-semibold">
-                    {actor.character}
+                    {season.name}
                   </h3>
                   <p className="absolute text-white bottom-2 text-sm font-semibold">
-                    {actor.name}
+                    {season.air_date}
                   </p>
                   {/* Agrega una sombra en la parte inferior */}
                 </div>
                 <div className="absolute inset-x-0 bottom-0 h-[200px] bg-gradient-to-t from-black to-transparent"></div>
               </div>
             </SwiperSlide>
-          ))}
+          )}
         </Swiper>
       </div>
     </div>
   );
 };
 
-export default ActorsSection;
+export default TvSeasonsSection;
