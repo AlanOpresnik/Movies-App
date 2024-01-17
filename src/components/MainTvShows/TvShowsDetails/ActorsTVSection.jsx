@@ -1,4 +1,4 @@
-import { useMoviesContxt } from "@/context/MovieContext/MoviesContext";
+
 import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -9,13 +9,14 @@ import "swiper/css/pagination";
 // import required modules
 import { Pagination, Autoplay } from "swiper/modules";
 import Image from "next/image";
-const ActorsSection = ({ id }) => {
-  const { obtenerActoresDePelicula, actores, URL_IMAGE } = useMoviesContxt();
+import { UseTvContext } from "@/context/TvContext/TvContext";
+const ActorsTVSection = ({ id }) => {
+  const { obtenerActoresDeTv, actores, URL_IMAGE } = UseTvContext();
   const [actoresCargados, setActoresCargados] = useState(false);
 
   useEffect(() => {
     const obtenerActores = async () => {
-      await obtenerActoresDePelicula(id);
+      await obtenerActoresDeTv(id);
 
       setActoresCargados(true);
     };
@@ -23,7 +24,7 @@ const ActorsSection = ({ id }) => {
     obtenerActores();
   }, [id]);
   return (
-    <div className="bg-[#000000f5]   text-white">
+    <div className="bg-[#000000]   text-white">
       <div className="py-32 max-w-[1280px] mx-auto">
         <p className="text-center md:text-start text-4xl font-semibold mb-12 text-[#B6B6B6]">
           Actores principales
@@ -133,4 +134,4 @@ const ActorsSection = ({ id }) => {
   );
 };
 
-export default ActorsSection;
+export default ActorsTVSection;

@@ -1,11 +1,9 @@
 import axios from "axios";
-import React, { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-// Crear el contexto
-const MoviesContext = createContext();
+const TvContext = createContext();
 
-// Crear el proveedor del contexto
-export const MoviesContextProvider = ({ children }) => {
+export const TvContextProvider = ({ children }) => {
   const API_KEY = "a41c4738f02c64dfaa5c82049d53de66";
   const API_URL = "https://api.themoviedb.org/3";
   const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
@@ -16,60 +14,104 @@ export const MoviesContextProvider = ({ children }) => {
   const [searchKey, setSearchKey] = useState("");
   const [trailer, setTrailer] = useState(null);
   const [playing, setPlaying] = useState(false);
-  const [movie, setMovie] = useState(null); // Inicializar con null u otro valor por defecto si es apropiado
   const [genres, setGenres] = useState([]);
+  const [Tvs, SetTvs] = useState([]);
   const [trailerTv, setTrailerTv] = useState(null);
   const [playingTv, setPlayingTv] = useState(false);
+  const [Tv, setTv] = useState(null);
   const [genresTv, setGenresTv] = useState([]);
   const [loading, setIsloading] = useState(true);
-  const [movieDetails, setMovieDetails] = useState([]);
+  const [TvDetails, setTvDetails] = useState([]);
   const [dateMovie, setDateMovie] = useState("");
   const [actores, setActores] = useState([]);
   const [videos, setVideos] = useState([]);
-  console.log(movie);
+  const [AirToday, setAirToday] = useState([]);
 
-  const fetchMovies = async (searchKey) => {
+  const fetchTVShows = async (searchKey, page = 1) => {
+    setIsloading(true);
     const type = searchKey ? "search" : "discover";
+    const API_KEY = "a41c4738f02c64dfaa5c82049d53de66";
+    const API_URL = "https://api.themoviedb.org/3";
+    const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
+    const URL_IMAGE = "https://image.tmdb.org/t/p/original";
+
 
     try {
       let allResults = [];
-      setIsloading(true);
       for (let page = 1; page <= totalPages; page++) {
-        const response = await axios(`${API_URL}/${type}/movie`, {
+        const response = await axios.get(`${API_URL}/${type}/tv`, {
           params: {
             api_key: API_KEY,
             query: searchKey,
             page: page,
           },
         });
-
         const { results } = response.data;
         allResults = [...allResults, ...results];
-        console.log(allResults);
+        SetTvs(allResults);
+        setIsloading(false);
       }
-
-      setMovies(allResults);
-      setMovie(allResults[0]);
-      setIsloading(false);
     } catch (error) {
-      console.error("Error fetching movies:", error);
+      console.log(error);
     }
   };
 
   useEffect(() => {
-    fetchMovies();
+    fetchTVShows();
   }, []);
-
-  const searchMovies = (e) => {
-    e.preventDefault();
-    fetchMovies(searchKey, 1);
+  const fechMoreTvShows = () => {
+    setTotalPages(totalPages + 1);
   };
+  useEffect(() => {
+    fetchTVShows();
+  }, [totalPages]);
+
+
+  const fetchTVShowsAirToday = async (searchKey, page = 1) => {
+    setIsloading(true);
+    const type = searchKey ? "search" : "discover";
+    const API_KEY = "a41c4738f02c64dfaa5c82049d53de66";
+    const API_URL = "https://api.themoviedb.org/3";
+    const IMAGE_PATH = "https://image.tmdb.org/t/p/original";
+    const URL_IMAGE = "https://image.tmdb.org/t/p/original";
+
+
+    try {
+      let allResults = [];
+      for (let page = 1; page <= totalPages; page++) {
+        const response = await axios.get(`${API_URL}/tv/airing_today`, {
+          params: {
+            api_key: API_KEY,
+            query: searchKey,
+            page: page,
+          },
+        });
+        const { results } = response.data;
+        allResults = [...allResults, ...results];
+        setAirToday(allResults);
+        setIsloading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTVShowsAirToday();
+  }, []);
+  const fechMoreTvShowsAirToday = () => {
+    setTotalPages(totalPages + 1);
+  };
+  useEffect(() => {
+    fetchTVShowsAirToday();
+  }, [totalPages]);
+
 
   const fetchGenres = async () => {
     setIsloading(true);
     try {
       const response = await fetch(
-        `${API_URL}/genre/movie/list?api_key=${API_KEY}`
+        `${API_URL}/genre/tv/list?api_key=${API_KEY}`
       );
       const data = await response.json();
       setGenres(data.genres);
@@ -80,22 +122,7 @@ export const MoviesContextProvider = ({ children }) => {
     }
   };
 
-  const fetchMovieDetails = async (id) => {
-    try {
-      setIsloading(true);
-      const response = await axios.get(`${API_URL}/movie/${id}`, {
-        params: {
-          api_key: API_KEY,
-        },
-      });
-
-      setMovieDetails(response.data);
-      setIsloading(false);
-    } catch (error) {
-      console.error("Error fetching movie details:", error);
-    }
-  };
-
+  
   const formatearFecha = async (date) => {
     try {
       console.log("Fecha Original:", date);
@@ -119,10 +146,28 @@ export const MoviesContextProvider = ({ children }) => {
     }
   };
 
-  const obtenerActoresDePelicula = async (id) => {
+
+  const fetchTvDetails = async (id) => {
+    try {
+      setIsloading(true);
+      const response = await axios.get(`${API_URL}/tv/${id}`, {
+        params: {
+          api_key: API_KEY,
+        },
+      });
+
+      setTvDetails(response.data);
+      setIsloading(false);
+    } catch (error) {
+      console.error("Error fetching movie details:", error);
+    }
+  };
+
+  
+  const obtenerActoresDeTv = async (id) => {
     try {
       const response = await fetch(
-        `${API_URL}/movie/${id}/credits?api_key=${API_KEY}`
+        `${API_URL}/tv/${id}/credits?api_key=${API_KEY}`
       );
 
       if (!response.ok) {
@@ -132,24 +177,19 @@ export const MoviesContextProvider = ({ children }) => {
       const data = await response.json();
       setActores(data.cast);
 
-      console.log("Actores de la película:", data.cast);
+      console.log("Actores de la tv:", data.cast);
     } catch (error) {
       console.error("Error:", error.message);
     }
   };
-  const getYouTubeTrailerUrl = (video) => {
-    if (video.site === "YouTube" && video.type === "Trailer") {
-      return `https://www.youtube.com/watch?v=${video.key}`;
-    } else {
-      // Si no es un trailer de YouTube, puedes manejarlo según tus necesidades
-      return null;
-    }
-  };
+
   const fetchVideos = async (id) => {
     try {
       const response = await axios.get(
-        `${API_URL}/movie/${id}/videos?api_key=${API_KEY}`
+        `${API_URL}/tv/${id}/videos?api_key=${API_KEY}`
       );
+
+      console.log("video")
 
       if (response.status !== 200) {
         throw new Error("Error al obtener los videos");
@@ -177,38 +217,40 @@ export const MoviesContextProvider = ({ children }) => {
   };
 
   return (
-    <MoviesContext.Provider
+    <TvContext.Provider
       value={{
         movies,
-        searchMovies,
         setSearchKey,
         searchKey,
-        movie,
         setPlaying,
-        setMovie,
         URL_IMAGE,
-        fetchMovies,
-        fetchGenres,
         genres,
+        fetchTVShows,
+        fetchGenres,
+        fetchVideos,
+        formatearFecha,
+        Tvs,
+        SetTvs,
+        actores,
         totalPages,
         setTotalPages,
-        fetchMovieDetails,
-        movieDetails,
-        formatearFecha,
+        fechMoreTvShows,
+        TvDetails,
         dateMovie,
         loading,
-        obtenerActoresDePelicula,
         actores,
-        fetchVideos,
         videos,
+        obtenerActoresDeTv,
+        fetchTvDetails,
+        fechMoreTvShowsAirToday,
+        AirToday,
       }}
     >
       {children}
-    </MoviesContext.Provider>
+    </TvContext.Provider>
   );
 };
 
-// Crear un hook personalizado para acceder al contexto
-export const useMoviesContxt = () => {
-  return useContext(MoviesContext);
+export const UseTvContext = () => {
+  return useContext(TvContext);
 };
