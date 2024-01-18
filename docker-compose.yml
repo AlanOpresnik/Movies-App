@@ -1,0 +1,17 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql_movie
+    restart: always
+    env_file: ./docker/.env-non-dev
+    ports:
+      - '3307:3306'
+    volumes:
+      - my-db:/var/lib/mysql
+    networks:
+      - movie-networks
+volumes:
+  my-db:
+networks:
+  movie-networks:
