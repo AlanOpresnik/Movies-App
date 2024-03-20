@@ -89,8 +89,8 @@ const Navbar = () => {
                 <Link href={"/about"}>Reproducir película de prueba</Link>
               </ListItem>
               {navbarItems.map((item) => (
-                <ListItem>
-                  <NavbarItem key={item.path} item={item} />
+                <ListItem key={item.title}>
+                  <NavbarItem key={item.title} item={item} />
                 </ListItem>
               ))}
             </List>

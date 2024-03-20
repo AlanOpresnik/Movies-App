@@ -1,34 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
-
-// import required modules
 import { Pagination, Autoplay } from "swiper/modules";
-
 import TvPoster from "./TvPoster";
 import { UseTvContext } from "@/context/TvContext/TvContext";
 
 const MainTvShowsSection = () => {
   const tvContext = UseTvContext();
-
-  if (!tvContext) {
-    // Si el contexto es undefined, puedes mostrar un mensaje de error o realizar alguna acción adecuada
-    return <p>Error: El contexto de TV es undefined.</p>;
-  }
-  Pagination;
-  const { Tvs, fechMoreTvShows } = UseTvContext();
-
   const [activeSlide, setActiveSlide] = useState(0);
   const [actionActivated, setActionActivated] = useState(false);
+
+  if (!tvContext) {
+    return <p>Error: El contexto de TV es undefined.</p>;
+  }
+
+  const { Tvs, fechMoreTvShows } = tvContext;
+
 
   const handleSwiperSlideChange = (swiper) => {
     setActiveSlide(swiper.activeIndex);
 
-    // Verifica si el índice del slider es 21 y esta en la última página
-    if (activeSlide >= 20 && !actionActivated) {
+    if (swiper.activeIndex >= 20 && !actionActivated) {
       fechMoreTvShows();
       setActionActivated(true);
     }

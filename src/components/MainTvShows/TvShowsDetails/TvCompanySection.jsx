@@ -39,7 +39,7 @@ const TvCompanySection = () => {
               Compañias en produccion
             </h3>
             {TvDetails?.production_companies?.map((company) => (
-              <p className="text-white text-sm py-1">{company.name}</p>
+              <p key={company.name} className="text-white text-sm py-1">{company.name}</p>
             ))}
           </div>
           <div className="flex flex-col justify-center items-center md:flex md:items-start mb-12">
@@ -47,7 +47,7 @@ const TvCompanySection = () => {
               Paises en produccion
             </h3>
             {TvDetails?.production_countries?.map((countrie) => (
-              <p className="text-white text-sm py-1">{countrie.name}</p>
+              <p key={countrie.name} className="text-white text-sm py-1">{countrie.name}</p>
             ))}
           </div>
           <div className="flex flex-col justify-center items-center md:flex md:items-start mb-12">

@@ -13,7 +13,7 @@ const TvCreator = () => {
         {TvDetails.created_by?.length > 1 ? (
           <div className="flex gap-6 flex-wrap  justify-center md:justify-start md:gap-12">
             {TvDetails.created_by?.map((creator) => (
-              <div className="relative">
+              <div key={creator.name} className="relative">
                 <Image
                   className="rounded-lg w-[180px] md:w-[260px] md:h-[360px]"
                   width={500}
